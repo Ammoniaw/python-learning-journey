@@ -1,0 +1,424 @@
+# 016-分支循环03-while循环与break
+
+## 问答题
+
+### 0.我们知道在游戏运行后，通常是玩家中断游戏或者主角被打败了，才会退出游戏。那么现在让你来开发一个游戏，你觉得应该如何实现这个机制（可以画流程图，也可以简单概述）？
+
+- 进入游戏前，使用一个变量记录游戏状态，中断游戏，或者被打败，记录游戏状态的变量改变，退出游戏
+- 流程图 -  小甲鱼
+  ![img](./assets/184315p81cj9ejspgf98qf-1785752031821-13.png)
+
+### 1. 请问下面代码存在什么问题？
+
+- 代码
+
+  ```python
+  love = 'yes'
+  while love = 'yes':
+      love = input("今天你还爱我吗：")
+  ```
+
+- 指出问题
+
+  ```python
+  love = 'yes'
+  while love = 'yes':  # 循环判断应该使用 ==,而不是 = ,并且这是一个无限循环
+      love = input("今天你还爱我吗：")
+  ```
+
+### 2. 如果不上机，你能算出下面循环执行完毕之后，打印的值应该是多少吗？
+
+- 代码
+
+  ```python
+  i = 1
+  sum = 0
+  while i < 10:
+      sum = sum + i
+      i = i + 1
+  print(sum)
+  ```
+
+- 45 - 可以使用等差数列公式进行计算。
+
+### 3.请问下面代码是否会构成一个死循环？
+
+- 代码
+
+  ```python
+  x = 9
+  while x:
+      print(x)
+      x -= 3
+      x += 1
+  ```
+
+- 会，x值始终都不为0
+
+### 4.当程序跑起来之后，如果发现是死循环，如何强制退出呢？
+
+- 关机！使用Ctrl + C,强制中断程序运行。
+
+### 5. 以下两段代码实现相同的功能，你觉得哪一段代码的实现更优雅？
+
+- 代码A
+
+  ```python
+  password = ''
+  while password != "FishC":
+      password = input("请输入密码：")
+      
+  print("欢迎您来！")
+  ```
+
+  
+
+- 代码B
+
+  ```python
+  while True:
+      password = input("请输入密码：")
+      if password == "FishC":
+          break
+      
+  print("欢迎您来！")
+  ```
+
+- 第二种吧，感觉更符合线性的思考流程。
+
+---
+
+# 动动手
+
+### 0. 请编写一个程序，实现如下图所示的效果：
+
+- 效果![img](./assets/180256m7pcrmyrp9z25pq7.png)
+
+- repeat.py
+
+  ```python
+  # -*- coding: utf-8 -*-
+  # @Software: PyCharm
+  # @Author: Ammoniaw
+  # @FileName: test.py
+  # @Date: 2026/8/3
+  # @Description: 复读机
+  
+  prompt = "请输入一句口号(输入STOP结束): "
+  while True:
+      slogan = input(prompt)
+      if slogan != "STOP":
+          print(slogan, sep="")
+      else:
+          break
+  ```
+
+### 1. 大家还记得第 008 讲课后作业那个模拟抛硬币的题目吗？
+
+- 效果图![img](./assets/180612sii39vi3dez9g8rq.png)
+
+- 要求
+
+  ```python
+  如果抛硬币的次数小于 100，则打印每次的结果，否则不打印
+  统计最终正面和反面的次数
+  ```
+
+- coin.py
+
+  ```python
+  # -*- coding: utf-8 -*-
+  # @Software: PyCharm
+  # @Author: Ammoniaw
+  # @FileName: coin.py
+  # @Date: 2026/8/3
+  # @Description: 抛硬币
+  import random
+  
+  counts = int(input("请输入抛硬币的次数："))
+  i = 0
+  purasi = 0
+  manasi = 0
+  print("开始抛硬币实验：")
+  if counts < 100:
+      while i < counts:
+          num = random.randint(1, 10)
+          if num % 2:
+              purasi += 1
+              print("正面", end=" ")
+          else:
+              manasi += 1
+              print("反面", end=" ")
+  
+          i += 1
+  else:
+      while i < counts:
+          num = random.randint(1, 10)
+          if num % 2:
+              purasi += 1
+          else:
+              manasi += 1
+  
+          i += 1
+  
+  print(f"一共模拟了{counts}次抛硬币，结果如下：")
+  print(f"反面: {manasi}次")
+  print(f"正面: {purasi}次")
+  print("最多连续正面")
+  print("最多连续反面")
+  
+  ```
+
+- 小甲鱼版本 - 确实非常巧妙，省了很多复写的代码
+
+  ```python
+  import random
+  
+  counts = int(input("请输入抛硬币的次数："))
+  
+  # 利用 ignore 变量来判断是否打印每次的结果
+  if counts > 100:
+      ignore = True
+  else:
+      ignore = False
+  
+  heads = 0 # 统计正面的次数
+  tails = 0 # 统计反面的次数
+  
+  i = 0
+  print("开始抛硬币实验……")
+  while i < counts:
+      num = random.randint(1, 10)
+  
+      if num % 2:
+          heads += 1
+          if not ignore:       
+              print("正面", end=" ")
+      else:
+          tails += 1
+          if not ignore:
+              print("反面", end=" ")
+  
+      i += 1
+  
+  print("")
+  print("一共模拟了", counts, "次抛硬币，结果如下：")
+  print("正面：", heads, "次", sep="")
+  print("反面：", tails, "次", sep="")
+  
+  ```
+
+  
+
+### 2.终极考验：编写代码，让程序分别统计正反面最多出现连续的次数。
+
+- 要求 - 不要使用超纲的知识
+
+- 效果图
+
+  ![img](./assets/184029cqqbp61lflubza33.png)
+
+- coin1.py
+
+  ```python
+  # -*- coding: utf-8 -*-
+  # @Software: PyCharm
+  # @Author: Ammoniaw
+  # @FileName: coin1.py
+  # @Date: 2026/8/3
+  # @Description: 抛硬币
+  import random
+  
+  counts = int(input("请输入抛硬币的次数："))
+  i = 0
+  # 正反面出现次数
+  purasu = 0
+  mainasu = 0
+  # 正反面连续最大次数
+  purasu_counts = 0
+  mainasu_counts = 0
+  # 正反面连续临时次数
+  j = 0
+  k = 0
+  print("开始抛硬币实验：")
+  if counts < 100:
+      while i < counts:
+          num = random.randint(1, 10)
+          if num % 2:
+              purasu += 1
+              print("正面", end=" ")
+              # 每次出现正面 j加1 并且设置反面连续为0
+              j += 1
+              k = 0
+              if j > purasu_counts:  # 如果j大于连续正面次数 就让连续次数统计+1 确保始终统计最大次数
+                  purasu_counts += 1
+  
+          else:
+              mainasu += 1
+              print("反面", end=" ")
+              # 每次到反面 就设置正面连续变量j为0
+              j = 0
+              k += 1  # 每次到反面就 设置反面连续变量k+1
+              if k > mainasu_counts:
+                  mainasu_counts += 1
+          i += 1
+  else:
+      while i < counts:
+          num = random.randint(1, 10)
+          if num % 2:
+              purasu += 1
+              # 每次出现正面 j加1 并且设置反面连续为0
+              j += 1
+              k = 0
+              if j > purasu_counts:  # 如果j大于连续正面次数 就让连续次数统计+1 确保始终统计最大次数
+                  purasu_counts += 1
+          else:
+              mainasu += 1
+              # 每次到反面 就设置正面连续变量j为0
+              j = 0
+              k += 1  # 每次到反面就 设置反面连续变量k+1
+              if k > mainasu_counts:
+                  mainasu_counts += 1
+  
+          i += 1
+  
+  print(f"一共模拟了{counts}次抛硬币，结果如下：")
+  print(f"反面: {mainasu}次")
+  print(f"正面: {purasu}次")
+  print(f"最多连续正面:{purasu_counts}次")
+  print(f"最多连续反面:{mainasu_counts}次")
+  
+  ```
+
+- 小甲鱼版本
+
+  ```python
+  import random
+  
+  counts = int(input("请输入抛硬币的次数："))
+  
+  # 利用 ignore 变量来判断是否打印每次的结果
+  if counts > 100:
+      ignore = True
+  else:
+      ignore = False
+  
+  heads = 0 # 统计正面的次数
+  tails = 0 # 统计反面的次数
+  
+  last = 0 # 记录上一次的状态，如果是正面设置为1, 反面则设置为2
+  c_heads = 0 # 统计连续正面的次数
+  c_tails = 0 # 统计连续反面的次数
+  max_heads = 0 # 统计连续正面的最多次数
+  max_tails = 0 # 统计连续反面的最多次数
+  
+  i = 0
+  print("开始抛硬币实验……")
+  while i < counts:
+      num = random.randint(1, 10)
+  
+      if num % 2:
+          heads += 1
+          c_heads += 1
+  
+          if not ignore:       
+              print("正面", end=" ")
+  
+          # 如果上一次是反面：将连续正面的次数设置为1
+          if last == 2:
+              c_heads = 1
+  
+          # 判断连续正面的次数是否比max_heads大，如果是，取而代之
+          if c_heads > max_heads:
+              max_heads = c_heads
+  
+          # 将上一次的状态设置为正面
+          last = 1
+      else:
+          tails += 1
+          c_tails += 1
+          
+          if not ignore:
+              print("反面", end=" ")
+  
+          # 如果上一次是正面：连续反面的次数设置为1
+          if last == 1:
+              c_tails = 1
+  
+          # 判断连续反面的次数是否比max_tails大，如果是，取而代之
+          if c_tails > max_tails:
+              max_tails = c_tails
+  
+          # 将上一次的状态设置为反面
+          last = 2
+          
+      i += 1
+  
+  print("")
+  print("一共模拟了", counts, "次抛硬币，结果如下：")
+  print("正面：", heads, "次", sep="")
+  print("反面：", tails, "次", sep="")
+  print("最多连续正面：", max_heads, "次", sep="")
+  print("最多连续反面：", max_tails, "次", sep="")
+  
+  ```
+
+- 根据小甲鱼版本 重构了自己的
+
+  ```python
+  # -*- coding: utf-8 -*-
+  # @Software: PyCharm
+  # @Author: Ammoniaw
+  # @FileName: coin1.py
+  # @Date: 2026/8/3
+  # @Description: 抛硬币
+  import random
+  
+  counts = int(input("请输入抛硬币的次数："))
+  i = 0
+  # 利用变量来控制是否输出正反面信息
+  if counts > 100:
+      ignore = True
+  else:
+      ignore = False
+  # 正反面出现次数
+  purasu = 0
+  mainasu = 0
+  # 正反面连续最大次数
+  purasu_counts = 0
+  mainasu_counts = 0
+  # 正反面连续临时次数
+  j = 0
+  k = 0
+  print("开始抛硬币实验：")
+  while i < counts:
+      num = random.randint(1, 10)
+      if num % 2:
+          purasu += 1
+          if not ignore:  # counts>100次，ignore为True,不输出正反面
+              print("正面", end=" ")
+          # 每次出现正面 j加1 并且设置临时反面连续为0
+          j += 1
+          k = 0
+          if j > purasu_counts:  # 如果j大于最大连续正面次数 就让最大连续次数统计+1 确保始终统计最大次数
+              purasu_counts += 1
+  
+      else:
+          mainasu += 1
+          if not ignore:
+              print("反面", end=" ")
+          # 每次到反面 就设置正面连续变量j为0
+          j = 0
+          k += 1  # 每次到反面就 设置临时反面连续变量k+1
+          if k > mainasu_counts:  # 确保始终统计最大次数
+              mainasu_counts += 1
+      i += 1
+  
+  print(f"一共模拟了{counts}次抛硬币，结果如下：")
+  print(f"反面: {mainasu}次")
+  print(f"正面: {purasu}次")
+  print(f"最多连续正面:{purasu_counts}次")
+  print(f"最多连续反面:{mainasu_counts}次")
+  ```
+
+  
