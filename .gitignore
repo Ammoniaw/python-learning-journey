@@ -1,15 +1,22 @@
-# PyCharm相关
-.idea/              
-*.iml        
- *.iws
-               
-# Python 编译缓存
-__pycache__/        
-*.pyc
-*.pyo  
-           
-# 虚拟环境
+# ========== PyCharm 相关（通通忽略） ==========
+.idea/              # .idea/ 目录
+*.iml               # IDE 的项目模块文件
+*.iws               # IDE 的工作区文件
+
+# ========== Python 编译缓存（必须忽略） ==========
+__pycache__/        # 任意层级的 pycache 都忽略
+*.pyc               # 编译后的字节码文件
+*.pyo
+
+# ========== 虚拟环境（防止本地环境上传） ==========
 venv/
 env/
 .venv
-.conda
+.conda             
+
+# ========== 操作系统垃圾文件 ==========
+.DS_Store           # Mac 系统文件
+Thumbs.db           # Windows 缩略图
+
+# ========== 忽略obsidian ==========
+.obsidian/
