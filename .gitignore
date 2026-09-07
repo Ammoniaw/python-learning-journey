@@ -1,5 +1,5 @@
 # ========== PyCharm 相关（通通忽略） ==========
-.idea/              # .idea/ 目录
+.idea/
 *.iml               # IDE 的项目模块文件
 *.iws               # IDE 的工作区文件
 
@@ -20,3 +20,5 @@ Thumbs.db           # Windows 缩略图
 
 # ========== 忽略obsidian ==========
 .obsidian/
+# 显式忽略路径
+exercises/little_turtle/.idea/
